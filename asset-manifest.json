@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/plan-to-eat/static/css/main.073c9b0a.css",
+    "main.js": "/plan-to-eat/static/js/main.5c99dbcf.js",
+    "static/js/787.4a8c0f66.chunk.js": "/plan-to-eat/static/js/787.4a8c0f66.chunk.js",
+    "index.html": "/plan-to-eat/index.html",
+    "main.073c9b0a.css.map": "/plan-to-eat/static/css/main.073c9b0a.css.map",
+    "main.5c99dbcf.js.map": "/plan-to-eat/static/js/main.5c99dbcf.js.map",
+    "787.4a8c0f66.chunk.js.map": "/plan-to-eat/static/js/787.4a8c0f66.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.073c9b0a.css",
+    "static/js/main.5c99dbcf.js"
+  ]
+}
