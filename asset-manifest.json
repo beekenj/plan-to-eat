@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/plan-to-eat/static/css/main.2d98cf93.css",
-    "main.js": "/plan-to-eat/static/js/main.a0923fb6.js",
+    "main.css": "/plan-to-eat/static/css/main.2a5ce2c0.css",
+    "main.js": "/plan-to-eat/static/js/main.2bc3e0f5.js",
     "static/js/787.4a8c0f66.chunk.js": "/plan-to-eat/static/js/787.4a8c0f66.chunk.js",
     "index.html": "/plan-to-eat/index.html",
-    "main.2d98cf93.css.map": "/plan-to-eat/static/css/main.2d98cf93.css.map",
-    "main.a0923fb6.js.map": "/plan-to-eat/static/js/main.a0923fb6.js.map",
+    "main.2a5ce2c0.css.map": "/plan-to-eat/static/css/main.2a5ce2c0.css.map",
+    "main.2bc3e0f5.js.map": "/plan-to-eat/static/js/main.2bc3e0f5.js.map",
     "787.4a8c0f66.chunk.js.map": "/plan-to-eat/static/js/787.4a8c0f66.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.2d98cf93.css",
-    "static/js/main.a0923fb6.js"
+    "static/css/main.2a5ce2c0.css",
+    "static/js/main.2bc3e0f5.js"
   ]
 }
