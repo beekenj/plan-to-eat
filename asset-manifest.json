@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/plan-to-eat/static/css/main.e66249e1.css",
+    "main.css": "/plan-to-eat/static/css/main.9cddab34.css",
     "main.js": "/plan-to-eat/static/js/main.b48ec175.js",
     "static/js/787.4a8c0f66.chunk.js": "/plan-to-eat/static/js/787.4a8c0f66.chunk.js",
     "index.html": "/plan-to-eat/index.html",
-    "main.e66249e1.css.map": "/plan-to-eat/static/css/main.e66249e1.css.map",
+    "main.9cddab34.css.map": "/plan-to-eat/static/css/main.9cddab34.css.map",
     "main.b48ec175.js.map": "/plan-to-eat/static/js/main.b48ec175.js.map",
     "787.4a8c0f66.chunk.js.map": "/plan-to-eat/static/js/787.4a8c0f66.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.e66249e1.css",
+    "static/css/main.9cddab34.css",
     "static/js/main.b48ec175.js"
   ]
 }
