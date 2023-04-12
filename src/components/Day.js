@@ -20,12 +20,21 @@ export default function Day(props) {
                 </div>
             </div>
             <div className="day-info">
-                {[props.weekday, ": ", props.meal ? props.meal.name : "Select Meal"]}
-                {props.meal && props.meal.link &&
-                    <form action={props.meal.link}>
-                        <button type="submit">Website</button>
-                    </form>
-                }
+                <div className="title">
+                    {props.weekday}
+                </div>
+                <div className="meal">
+                    <div>
+                        {props.meal ? props.meal.name : "Select Meal"}
+                    </div>
+                    <div className="link">
+                        {props.meal && props.meal.link &&
+                            <form action={props.meal.link}>
+                                <button type="submit" className="button">Website</button>
+                            </form>
+                        }
+                    </div>
+                </div>
             </div>
         </div>
     )
