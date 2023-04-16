@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+
+// firebase stuff
 import { initializeApp } from "firebase/app"
 import { 
   getDatabase, 
@@ -8,6 +10,11 @@ import {
   set, 
   remove,
 } from "firebase/database"
+// import { 
+//   getAuth,
+//   connectAuthEmulator,
+//   signInWithEmailAndPassword,
+// } from "firebase/auth"
 
 import './App.css';
 
@@ -20,6 +27,9 @@ import {
   faPlus,
   faArrowLeft,
   faCartPlus,
+  faCutlery,
+  faCalendar,
+  faTimes,
 } from '@fortawesome/free-solid-svg-icons'
 import ListItem from './components/ListItem';
 
@@ -32,6 +42,8 @@ const database = getDatabase(app)
 const shoppingListInDB = ref(database, "homeToCart")
 const mealPlanInDB = ref(database, "mealPlan")
 const mealsInDB = ref(database, "meals")
+
+// const auth = getAuth(app)
 
 function App() {
   const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
@@ -52,7 +64,7 @@ function App() {
     img:'',
   })
   const [mealSelect, setMealSelect] = useState(null)
-  const [cart, setCart] = useState(false)
+  const [section, setSection] = useState("calendar")
 
   useEffect(() => {
     onValue(shoppingListInDB, function(snapshot) {
@@ -111,25 +123,34 @@ function App() {
     })
   }
 
+  function removePlan(day) {
+    set(ref(database, `mealPlan/${day}`), "none")
+    setDaySelect(null)
+  }
+
   // Get unique keys from ingredients of selected meals
   const keys = Array
     .from(new Set(Object.values(planObj)
+    .filter(elem => elem !== "none")
     .map(elem => Object.keys(mealsObj).length > 0 && mealsObj[elem].ingredients)
     .map(elem => Object.keys(elem)).flat()
     .filter(elem => elem !== "placeHolder")))
   
-  // get associated items and plance in array of [key, value] pairs 
+  // get associated items and place in array of [key, value] pairs 
   const items = keys.map(elem => shoppingObj[elem])
   const addToShoppingListItems = keys.map((key, idx) => [key, items[idx]])
+
+  // console.log(mealsObj)
+  // console.log(mealsObj[planObj[daySelect]])
 
   return (
     <>
     <div className="App">
       <div style={{height:"25px"}} />
-      {!daySelect && !cart &&
+      {!daySelect && section === "calendar" &&
         weekStartingToday.map((elem, idx) => <Day key={idx} weekday={elem} meal={mealsObj[planObj[elem]]} mealClick={() => setDaySelect(elem)} />)
       }
-      {!daySelect && cart &&
+      {!daySelect && section === "cart" &&
         addToShoppingListItems.map(item => 
           <ListItem
             key={item[0]}
@@ -202,14 +223,26 @@ function App() {
     {/* Top bar */}
     <div className="navbar-group">
       {!daySelect &&
-        <button className='button' style={{color: cart ? "lightblue" : "white"}} onClick={() => setCart(prev => !prev)}><FontAwesomeIcon icon={faCartPlus} /></button>
+        <div>
+          <button className='button' style={{color: section === "calendar" ? "lightblue" : "white"}} onClick={() => setSection("calendar")}><FontAwesomeIcon icon={faCalendar} /></button>
+          <button className='button' style={{color: section === "cart" ? "lightblue" : "white"}} onClick={() => setSection("cart")}><FontAwesomeIcon icon={faCartPlus} /></button>
+          <button className='button' style={{color: section === "meals" ? "lightblue" : "white"}} onClick={() => setSection("meals")}><FontAwesomeIcon icon={faCutlery} /></button>
+        </div>
       }
       {daySelect && 
         !mealAdd && 
         !mealSelect &&
-        <button className='button' onClick={() => setDaySelect(null)} >
-          <FontAwesomeIcon icon={faArrowLeft} />
-        </button>
+        <>
+          <button className='button' onClick={() => setDaySelect(null)} >
+            <FontAwesomeIcon icon={faArrowLeft} />
+          </button>
+          <button className='button'>
+            {daySelect} : {mealsObj[planObj[daySelect]] ? mealsObj[planObj[daySelect]].name : "Select Meal"}
+          </button>
+          <button className='button' onClick={() => removePlan(daySelect)} >
+            <FontAwesomeIcon icon={faTimes} />
+          </button>
+        </>
       }
       {daySelect && 
         !mealAdd && 
