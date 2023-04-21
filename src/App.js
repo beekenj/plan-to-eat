@@ -219,10 +219,35 @@ function App() {
           <button onClick={addNew}>Submit</button>
         </>
       }
+      {section === "meals" && !mealSelect &&
+        <div>
+          <div className='meal-list'>
+            {mealsList.map(elem => 
+              <Meal 
+                key={elem[0]} 
+                meal={elem[1]} 
+                handleClick={() => console.log("todo?")} 
+                ingredientsClick={() => setMealSelect(elem[0])} 
+              />)}
+            <button className='add-button' onClick={() => setMealAdd(true)}><FontAwesomeIcon icon={faPlus} /></button>
+          </div>
+        </div>
+      }
+      {section === "meals" && mealSelect &&
+        shoppingList.map(item => 
+          <ListItem
+            key={item[0]}
+            id={item[0]}
+            item={item[1]}
+            handleChange={e => ingredientsCheck(e.target.checked, item[0])}
+            // checked={mealsObj[mealSelect].ingredients[item[0]]}
+            checked={item[0] in mealsObj[mealSelect].ingredients}
+          />)
+      }
     </div>
     {/* Top bar */}
     <div className="navbar-group">
-      {!daySelect &&
+      {!daySelect && !mealSelect &&
         <div>
           <button className='button' style={{color: section === "calendar" ? "lightblue" : "white"}} onClick={() => setSection("calendar")}><FontAwesomeIcon icon={faCalendar} /></button>
           <button className='button' style={{color: section === "cart" ? "lightblue" : "white"}} onClick={() => setSection("cart")}><FontAwesomeIcon icon={faCartPlus} /></button>
@@ -259,7 +284,14 @@ function App() {
           <FontAwesomeIcon icon={faArrowLeft} />
         </button>
       }
-      
+      {section === "meals" && mealSelect &&
+        <>
+        <button className='button' onClick={() => setMealSelect(null)} >
+          <FontAwesomeIcon icon={faArrowLeft} />
+        </button>
+        <div style={{color:"white", }}>{mealsObj[mealSelect].name}</div>
+        </>
+      }
     </div>
     </>
   );
