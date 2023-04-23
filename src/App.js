@@ -172,7 +172,7 @@ function App() {
                 handleClick={() => selectMeal(elem[0])} 
                 ingredientsClick={() => setMealSelect(elem[0])} 
               />)}
-            <button className='add-button' onClick={() => setMealAdd(true)}><FontAwesomeIcon icon={faPlus} /></button>
+            {/* <button className='add-button' onClick={() => setMealAdd(true)}><FontAwesomeIcon icon={faPlus} /></button> */}
           </div>
         </div>
       }
@@ -219,7 +219,7 @@ function App() {
           <button onClick={addNew}>Submit</button>
         </>
       }
-      {section === "meals" && !mealSelect &&
+      {section === "meals" && !mealSelect && !mealAdd &&
         <div>
           <div className='meal-list'>
             {mealsList.map(elem => 
@@ -232,6 +232,39 @@ function App() {
             <button className='add-button' onClick={() => setMealAdd(true)}><FontAwesomeIcon icon={faPlus} /></button>
           </div>
         </div>
+      }
+      {section === "meals" && mealAdd &&
+        <>
+          <input 
+            type='text' 
+            value={newMeal.name} 
+            placeholder='Name'
+            onChange={e => setNewMeal(prev => 
+              {
+                return {...prev, "name":e.target.value}
+              })}
+          />
+          <input 
+            type='text' 
+            value={newMeal.link} 
+            placeholder='Recipe Link'
+            onChange={e => setNewMeal(prev => 
+              {
+                return {...prev, "link":e.target.value}
+              })}
+          />
+          <input 
+            type='text' 
+            value={newMeal.img} 
+            placeholder='Image'
+            onChange={e => setNewMeal(prev => 
+              {
+                return {...prev, "img":e.target.value}
+              })}
+          />
+          <button onClick={addNew}>Submit</button>
+          <button onClick={() => setMealAdd(false)}>Cancel</button>
+        </>
       }
       {section === "meals" && mealSelect &&
         shoppingList.map(item => 
