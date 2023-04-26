@@ -222,6 +222,7 @@ function App() {
       {section === "meals" && !mealSelect && !mealAdd &&
         <div>
           <div className='meal-list'>
+            <button className='add-button' onClick={() => setMealAdd(true)}><FontAwesomeIcon icon={faPlus} /></button>
             {mealsList.map(elem => 
               <Meal 
                 key={elem[0]} 
@@ -229,7 +230,6 @@ function App() {
                 handleClick={() => console.log("todo?")} 
                 ingredientsClick={() => setMealSelect(elem[0])} 
               />)}
-            <button className='add-button' onClick={() => setMealAdd(true)}><FontAwesomeIcon icon={faPlus} /></button>
           </div>
         </div>
       }
@@ -237,6 +237,7 @@ function App() {
         <>
           <input 
             type='text' 
+            className='add-input'
             value={newMeal.name} 
             placeholder='Name'
             onChange={e => setNewMeal(prev => 
@@ -246,6 +247,7 @@ function App() {
           />
           <input 
             type='text' 
+            className='add-input'
             value={newMeal.link} 
             placeholder='Recipe Link'
             onChange={e => setNewMeal(prev => 
@@ -255,6 +257,7 @@ function App() {
           />
           <input 
             type='text' 
+            className='add-input'
             value={newMeal.img} 
             placeholder='Image'
             onChange={e => setNewMeal(prev => 
@@ -262,8 +265,8 @@ function App() {
                 return {...prev, "img":e.target.value}
               })}
           />
-          <button onClick={addNew}>Submit</button>
-          <button onClick={() => setMealAdd(false)}>Cancel</button>
+          <button className='new-button' onClick={addNew}>Submit</button>
+          <button className='new-button' onClick={() => setMealAdd(false)}>Cancel</button>
         </>
       }
       {section === "meals" && mealSelect &&
