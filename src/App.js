@@ -47,7 +47,12 @@ const mealsInDB = ref(database, "meals")
 
 function App() {
   const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+  const DAY = 86400000
   const today = new Date()
+
+  // console.log(new Date().setHours(0,0,0,0))
+
+  const [currentDay, setCurrentDay] = useState(JSON.parse(localStorage.getItem("currentDay")) || new Date().setHours(0,0,0,0))
 
   const weekStartingToday = Array(7).fill().map((_, idx) => today.getDay()+idx < 7 ? weekdays[today.getDay()+idx] : weekdays[today.getDay()+idx-7])
 
@@ -86,6 +91,10 @@ function App() {
         setMealsObj(snapshot.val())
       } 
     })
+    if (new Date() >= currentDay+DAY) {
+      set(ref(database, `mealPlan/${weekdays[currentDay.getDay()]}`), "none")
+      setCurrentDay(new Date().setHours(0,0,0,0))
+    }
   }, [])
 
   function addNew() {
