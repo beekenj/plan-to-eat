@@ -47,12 +47,15 @@ const mealsInDB = ref(database, "meals")
 
 function App() {
   const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-  const DAY = 86400000
+  // const DAY = 86400000
   const today = new Date()
 
-  // console.log(new Date().setHours(0,0,0,0))
+  
+  // const [currentDay, setCurrentDay] = useState(JSON.parse(localStorage.getItem("currentDay")) || new Date().setHours(0,0,0,0))
 
-  const [currentDay, setCurrentDay] = useState(JSON.parse(localStorage.getItem("currentDay")) || new Date().setHours(0,0,0,0))
+  // console.log(new Date(currentDay).getDay())
+  // console.log(new Date(Number(localStorage.getItem("currentDay"))+DAY))
+  // localStorage.setItem("currentDay", JSON.stringify(currentDay))
 
   const weekStartingToday = Array(7).fill().map((_, idx) => today.getDay()+idx < 7 ? weekdays[today.getDay()+idx] : weekdays[today.getDay()+idx-7])
 
@@ -70,6 +73,7 @@ function App() {
   })
   const [mealSelect, setMealSelect] = useState(null)
   const [section, setSection] = useState("calendar")
+  const [searchIngredients, setSearchIngredients] = useState('')
 
   useEffect(() => {
     onValue(shoppingListInDB, function(snapshot) {
@@ -91,10 +95,12 @@ function App() {
         setMealsObj(snapshot.val())
       } 
     })
-    if (new Date() >= currentDay+DAY) {
-      set(ref(database, `mealPlan/${weekdays[currentDay.getDay()]}`), "none")
-      setCurrentDay(new Date().setHours(0,0,0,0))
-    }
+    // const week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    // if (new Date() >= new Date(Number(localStorage.getItem("currentDay"))+DAY)) {
+    //   set(ref(database, `mealPlan/${week[new Date(currentDay).getDay()]}`), "none")
+    //   setCurrentDay(new Date().setHours(0,0,0,0))
+    //   localStorage.setItem("currentDay", JSON.stringify(currentDay))
+    // }
   }, [])
 
   function addNew() {
@@ -137,6 +143,13 @@ function App() {
     setDaySelect(null)
   }
 
+  // clear inputs on enter key
+  function searchEnter(event) {
+    if (event.key === "Enter") {
+      event.target.blur()
+    }
+  }
+
   // Get unique keys from ingredients of selected meals
   const keys = Array
     .from(new Set(Object.values(planObj)
@@ -148,6 +161,10 @@ function App() {
   // get associated items and place in array of [key, value] pairs 
   const items = keys.map(elem => shoppingObj[elem])
   const addToShoppingListItems = keys.map((key, idx) => [key, items[idx]])
+
+  const condition = new RegExp(searchIngredients.toLowerCase())
+
+  // console.log(shoppingList)
 
   // console.log(mealsObj)
   // console.log(mealsObj[planObj[daySelect]])
@@ -278,15 +295,18 @@ function App() {
           <button className='new-button' onClick={() => setMealAdd(false)}>Cancel</button>
         </>
       }
+      {/* Ingredients menu */}
       {section === "meals" && mealSelect &&
-        shoppingList.map(item => 
-          <ListItem
-            key={item[0]}
-            id={item[0]}
-            item={item[1]}
-            handleChange={e => ingredientsCheck(e.target.checked, item[0])}
-            // checked={mealsObj[mealSelect].ingredients[item[0]]}
-            checked={item[0] in mealsObj[mealSelect].ingredients}
+        shoppingList
+          .filter(item => condition.test(item[1].name.toLowerCase()))
+          .map(item => 
+            <ListItem
+              key={item[0]}
+              id={item[0]}
+              item={item[1]}
+              handleChange={e => ingredientsCheck(e.target.checked, item[0])}
+              // checked={mealsObj[mealSelect].ingredients[item[0]]}
+              checked={item[0] in mealsObj[mealSelect].ingredients}
           />)
       }
     </div>
@@ -329,12 +349,22 @@ function App() {
           <FontAwesomeIcon icon={faArrowLeft} />
         </button>
       }
+      {/* Ingredients menu top bar */}
       {section === "meals" && mealSelect &&
         <>
-        <button className='button' onClick={() => setMealSelect(null)} >
-          <FontAwesomeIcon icon={faArrowLeft} />
-        </button>
-        <div style={{color:"white", }}>{mealsObj[mealSelect].name}</div>
+        <div>
+          <button className='button' onClick={() => setMealSelect(null)} >
+            <FontAwesomeIcon icon={faArrowLeft} />
+          </button>
+          <input
+            type='text'
+            className='searchbar'
+            value={searchIngredients}
+            onChange={e => setSearchIngredients(e.target.value)}
+            onKeyDown={searchEnter}
+          />
+        </div>
+        <button className='button' style={{color:"white", }}>{mealsObj[mealSelect].name}</button>
         </>
       }
     </div>
