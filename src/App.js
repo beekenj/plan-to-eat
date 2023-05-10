@@ -47,14 +47,14 @@ const mealsInDB = ref(database, "meals")
 
 function App() {
   const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-  // const DAY = 86400000
+  const DAY = 86400000
   const today = new Date()
 
   
-  // const [currentDay, setCurrentDay] = useState(JSON.parse(localStorage.getItem("currentDay")) || new Date().setHours(0,0,0,0))
+  const [currentDay, setCurrentDay] = useState(JSON.parse(localStorage.getItem("currentDay")) || new Date().setHours(0,0,0,0))
 
   // console.log(new Date(currentDay).getDay())
-  // console.log(new Date(Number(localStorage.getItem("currentDay"))+DAY))
+  // console.log(weekdays.slice(new Date(Number(localStorage.getItem("currentDay"))).getDay(), today.getDay()))
   // localStorage.setItem("currentDay", JSON.stringify(currentDay))
 
   const weekStartingToday = Array(7).fill().map((_, idx) => today.getDay()+idx < 7 ? weekdays[today.getDay()+idx] : weekdays[today.getDay()+idx-7])
@@ -95,13 +95,18 @@ function App() {
         setMealsObj(snapshot.val())
       } 
     })
-    // const week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-    // if (new Date() >= new Date(Number(localStorage.getItem("currentDay"))+DAY)) {
-    //   set(ref(database, `mealPlan/${week[new Date(currentDay).getDay()]}`), "none")
-    //   setCurrentDay(new Date().setHours(0,0,0,0))
-    //   localStorage.setItem("currentDay", JSON.stringify(currentDay))
-    // }
-  }, [])
+    const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    const today = new Date()
+    if (new Date() >= new Date(Number(localStorage.getItem("currentDay"))+DAY)) {
+      
+      weekdays
+      .slice(new Date(Number(localStorage.getItem("currentDay"))).getDay(), today.getDay())
+      .forEach(day => set(ref(database, `mealPlan/${day}`), "none"))
+      
+      setCurrentDay(new Date().setHours(0,0,0,0))
+      localStorage.setItem("currentDay", JSON.stringify(currentDay))
+    }
+  }, [currentDay])
 
   function addNew() {
     push(mealsInDB, newMeal)
@@ -121,7 +126,6 @@ function App() {
 
   function ingredientsCheck(checked, id) {
     if (checked) {
-      // set(ref(database, `meals/${mealSelect}/ingredients/${id}`), checked ? true : false)
       set(ref(database, `meals/${mealSelect}/ingredients/${id}`), true)
     } else {
       remove(ref(database, `meals/${mealSelect}/ingredients/${id}`))

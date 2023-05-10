@@ -1,16 +1,28 @@
 .container-day {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     margin: 5px auto;
     border-radius: 8px;
     width: 100%;
     box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.2);
     font-size: 20px;
-    min-height: 100px;
+    min-height: 200px;
     background-color: #FFFDF8;
-    align-items: center;
+    /* align-items: center; */
     /* justify-content: space-between; */
     /* padding: 10px; */
+}
+
+.container-day .top {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    font-size: 20px;
+}
+
+.container-day .bottom {
+    padding: 8px;
+    font-weight: bold;
 }
 
 .day-pic {
@@ -48,6 +60,8 @@
 .day-info .title {
     font-weight: bold;
     margin-bottom: 10px;
+    /* border: solid black; */
+    text-align: right;
 }
 
 .day-info .meal {
@@ -79,5 +93,5 @@
     color: #fff;
     border: none;
     border-radius: 5px;
-    padding: 5px;
+    padding: 12px;
 }
