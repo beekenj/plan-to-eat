@@ -65,7 +65,6 @@
 }
 
 .day-info .meal {
-    /* style={{display:"flex", width:"170px", justifyContent:"space-between"}} */
     display: flex;
     width: 170px;
     justify-content: space-between;

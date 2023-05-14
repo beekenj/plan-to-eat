@@ -95,17 +95,30 @@ function App() {
         setMealsObj(snapshot.val())
       } 
     })
+  }, [])
+
+  // console.log(planObj["Sunday"])
+
+  // Daily reset
+  useEffect(() => {
     const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
     const today = new Date()
     if (new Date() >= new Date(Number(localStorage.getItem("currentDay"))+DAY)) {
       
       weekdays
       .slice(new Date(Number(localStorage.getItem("currentDay"))).getDay(), today.getDay())
-      .forEach(day => set(ref(database, `mealPlan/${day}`), "none"))
-      
-      setCurrentDay(new Date().setHours(0,0,0,0))
-      localStorage.setItem("currentDay", JSON.stringify(currentDay))
+      .forEach(day => {
+        const oldMeal = planObj[day]
+        set(ref(database, `mealPlanExtended/${day}/lastWeek`), oldMeal)
+        set(ref(database, `mealPlan/${day}`), "none")
+      })
+
+      setCurrentDay(new Date().setHours(0,0,0,0)) 
     }
+  }, [planObj])
+
+  useEffect(() => {
+    localStorage.setItem("currentDay", JSON.stringify(currentDay))
   }, [currentDay])
 
   function addNew() {
@@ -130,6 +143,7 @@ function App() {
     } else {
       remove(ref(database, `meals/${mealSelect}/ingredients/${id}`))
     }
+    setSearchIngredients('')
   }
 
   // Check item change event
