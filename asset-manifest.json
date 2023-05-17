@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/plan-to-eat/static/css/main.d77e77ac.css",
-    "main.js": "/plan-to-eat/static/js/main.96914775.js",
+    "main.js": "/plan-to-eat/static/js/main.d9d9e3cf.js",
     "static/js/787.4a8c0f66.chunk.js": "/plan-to-eat/static/js/787.4a8c0f66.chunk.js",
     "static/media/default_food.jpg": "/plan-to-eat/static/media/default_food.202d86fc46080ff71b83.jpg",
     "index.html": "/plan-to-eat/index.html",
     "main.d77e77ac.css.map": "/plan-to-eat/static/css/main.d77e77ac.css.map",
-    "main.96914775.js.map": "/plan-to-eat/static/js/main.96914775.js.map",
+    "main.d9d9e3cf.js.map": "/plan-to-eat/static/js/main.d9d9e3cf.js.map",
     "787.4a8c0f66.chunk.js.map": "/plan-to-eat/static/js/787.4a8c0f66.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.d77e77ac.css",
-    "static/js/main.96914775.js"
+    "static/js/main.d9d9e3cf.js"
   ]
 }
