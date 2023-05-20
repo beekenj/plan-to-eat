@@ -30,6 +30,7 @@ import {
   faCutlery,
   faCalendar,
   faTimes,
+  faPaperPlane,
 } from '@fortawesome/free-solid-svg-icons'
 import ListItem from './components/ListItem';
 
@@ -41,6 +42,7 @@ const app = initializeApp(appSettings)
 const database = getDatabase(app)
 const shoppingListInDB = ref(database, "homeToCart")
 const mealPlanInDB = ref(database, "mealPlan")
+const mealPlanExtendedInDB = ref(database, "mealPlanExtended")
 const mealsInDB = ref(database, "meals")
 
 // const auth = getAuth(app)
@@ -62,6 +64,7 @@ function App() {
   const [shoppingList, setShoppingList] = useState([])
   const [shoppingObj, setShoppingObj] = useState({})
   const [planObj, setPlanObj] = useState({})
+  const [planObjExtended, setPlanObjExtended] = useState({})
   const [mealsObj, setMealsObj] = useState({})
   const [mealsList, setMealsList] = useState({})
   const [daySelect, setDaySelect] = useState(null)
@@ -88,6 +91,11 @@ function App() {
         setPlanObj(snapshot.val())
       } 
     })
+    onValue(mealPlanExtendedInDB, function(snapshot) {
+      if (snapshot.exists()) {
+        setPlanObjExtended(snapshot.val())
+      } 
+    })
     onValue(mealsInDB, function(snapshot) {
       if (snapshot.exists()) {
         let mealsListArray = Object.entries(snapshot.val())  
@@ -97,25 +105,27 @@ function App() {
     })
   }, [])
 
-  // console.log(planObj["Sunday"])
+  // console.log(planObjExtended)
+  // const obj = {}
+  // weekdays.slice(new Date(Number(localStorage.getItem("currentDay"))).getDay(), today.getDay()).forEach(day => console.log(day, planObj[day]))
 
   // Daily reset
-  useEffect(() => {
-    const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-    const today = new Date()
-    if (new Date() >= new Date(Number(localStorage.getItem("currentDay"))+DAY)) {
+  // useEffect(() => {
+  //   const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+  //   const today = new Date()
+  //   if (new Date() >= new Date(Number(localStorage.getItem("currentDay"))+DAY)) {
       
-      weekdays
-      .slice(new Date(Number(localStorage.getItem("currentDay"))).getDay(), today.getDay())
-      .forEach(day => {
-        const oldMeal = planObj[day]
-        set(ref(database, `mealPlanExtended/${day}/lastWeek`), oldMeal)
-        set(ref(database, `mealPlan/${day}`), "none")
-      })
+  //     weekdays
+  //     .slice(new Date(Number(localStorage.getItem("currentDay"))).getDay(), today.getDay())
+  //     .forEach(day => {
+  //       const oldMeal = planObj[day]
+  //       set(ref(database, `mealPlanExtended/${day}/lastWeek`), oldMeal)
+  //       set(ref(database, `mealPlan/${day}`), "none")
+  //     })
 
-      setCurrentDay(new Date().setHours(0,0,0,0)) 
-    }
-  }, [planObj])
+  //     setCurrentDay(new Date().setHours(0,0,0,0)) 
+  //   }
+  // }, [planObj])
 
   useEffect(() => {
     localStorage.setItem("currentDay", JSON.stringify(currentDay))
@@ -168,6 +178,24 @@ function App() {
     }
   }
 
+  function resetDays() {
+    weekdays
+      .slice(new Date(Number(localStorage.getItem("currentDay"))).getDay(), today.getDay())
+      .forEach(day => {
+        const oldMeal = planObj[day]
+        set(ref(database, `mealPlanExtended/${day}/lastWeek`), oldMeal)
+        set(ref(database, `mealPlan/${day}`), "none")
+      })
+
+    setCurrentDay(new Date().setHours(0,0,0,0)) 
+
+    // weekdays
+    //   .forEach(day => {
+    //     const meal = planObj[day]
+    //     set(ref(database, `mealPlanExtended/${day}/thisWeek`), meal)
+    //   })
+  }
+
   // Get unique keys from ingredients of selected meals
   const keys = Array
     .from(new Set(Object.values(planObj)
@@ -186,13 +214,22 @@ function App() {
 
   // console.log(mealsObj)
   // console.log(mealsObj[planObj[daySelect]])
+  // console.log(mealsObj[planObjExtended["Tuesday"].lastWeek].name)
 
   return (
     <>
     <div className="App">
       <div style={{height:"25px"}} />
       {!daySelect && section === "calendar" &&
-        weekStartingToday.map((elem, idx) => <Day key={idx} weekday={elem} meal={mealsObj[planObj[elem]]} mealClick={() => setDaySelect(elem)} />)
+        weekStartingToday.map((elem, idx) =>           
+          <Day key={idx} 
+            weekday={elem} 
+            // lastWeek={planObjExtended[elem]}
+            meal={mealsObj[planObj[elem]]} 
+            lastWeek={planObjExtended[elem] && mealsObj[planObjExtended[elem].lastWeek]} 
+            mealClick={() => setDaySelect(elem)} 
+          />
+        )
       }
       {!daySelect && section === "cart" &&
         addToShoppingListItems.map(item => 
@@ -331,10 +368,15 @@ function App() {
     {/* Top bar */}
     <div className="navbar-group">
       {!daySelect && !mealSelect &&
-        <div>
-          <button className='button' style={{color: section === "calendar" ? "lightblue" : "white"}} onClick={() => setSection("calendar")}><FontAwesomeIcon icon={faCalendar} /></button>
-          <button className='button' style={{color: section === "cart" ? "lightblue" : "white"}} onClick={() => setSection("cart")}><FontAwesomeIcon icon={faCartPlus} /></button>
-          <button className='button' style={{color: section === "meals" ? "lightblue" : "white"}} onClick={() => setSection("meals")}><FontAwesomeIcon icon={faCutlery} /></button>
+        <div className="navbar-group-inner">
+          <div>
+            <button className='button' style={{color: section === "calendar" ? "lightblue" : "white"}} onClick={() => setSection("calendar")}><FontAwesomeIcon icon={faCalendar} /></button>
+            <button className='button' style={{color: section === "cart" ? "lightblue" : "white"}} onClick={() => setSection("cart")}><FontAwesomeIcon icon={faCartPlus} /></button>
+            <button className='button' style={{color: section === "meals" ? "lightblue" : "white"}} onClick={() => setSection("meals")}><FontAwesomeIcon icon={faCutlery} /></button>
+          </div>
+          <div>
+            <button className='button' onClick={resetDays}><FontAwesomeIcon icon={faPaperPlane} /></button>
+          </div>
         </div>
       }
       {daySelect && 

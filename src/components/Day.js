@@ -46,7 +46,7 @@ export default function Day(props) {
                 Lunch:
             </div>
             <div className="bottom">
-                Last Week:
+                <div>Last Week: </div><div style={{marginLeft:"10px", fontWeight:"normal"}}>{props.lastWeek ? props.lastWeek.name : "None"}</div>
             </div>
         </div>
     )

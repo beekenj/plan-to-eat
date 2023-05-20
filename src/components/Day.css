@@ -23,6 +23,7 @@
 .container-day .bottom {
     padding: 8px;
     font-weight: bold;
+    display: flex;
 }
 
 .day-pic {
