@@ -49,13 +49,13 @@ const mealsInDB = ref(database, "meals")
 
 function App() {
   const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-  const DAY = 86400000
+  // const DAY = 86400000
   const today = new Date()
 
   
   const [currentDay, setCurrentDay] = useState(JSON.parse(localStorage.getItem("currentDay")) || new Date().setHours(0,0,0,0))
 
-  // console.log(new Date(currentDay).getDay())
+  // console.log(weekdays[new Date(currentDay).getDay()])
   // console.log(weekdays.slice(new Date(Number(localStorage.getItem("currentDay"))).getDay(), today.getDay()))
   // localStorage.setItem("currentDay", JSON.stringify(currentDay))
 
@@ -178,9 +178,11 @@ function App() {
     }
   }
 
+  // console.log(weekdays.slice(new Date(currentDay).getDay(), today.getDay()))
+
   function resetDays() {
     weekdays
-      .slice(new Date(Number(localStorage.getItem("currentDay"))).getDay(), today.getDay())
+      .slice(new Date(currentDay).getDay(), today.getDay())
       .forEach(day => {
         const oldMeal = planObj[day]
         set(ref(database, `mealPlanExtended/${day}/lastWeek`), oldMeal)
@@ -215,6 +217,7 @@ function App() {
   // console.log(mealsObj)
   // console.log(mealsObj[planObj[daySelect]])
   // console.log(mealsObj[planObjExtended["Tuesday"].lastWeek].name)
+  // console.log(today)
 
   return (
     <>
@@ -239,6 +242,7 @@ function App() {
             item={item[1]}
             handleChange={handleChangeHome}
             checked={item[1].inCart}
+            // checked={true}
           />
         )
       }
