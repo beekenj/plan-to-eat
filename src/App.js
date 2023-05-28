@@ -383,6 +383,7 @@ function App() {
           </div>
         </div>
       }
+      {/* Meal list top bar */}
       {daySelect && 
         !mealAdd && 
         !mealSelect &&
@@ -390,6 +391,13 @@ function App() {
           <button className='button' onClick={() => setDaySelect(null)} >
             <FontAwesomeIcon icon={faArrowLeft} />
           </button>
+          <input
+            type='text'
+            className='searchbar'
+            value={searchIngredients}
+            onChange={e => setSearchIngredients(e.target.value)}
+            onKeyDown={searchEnter}
+          />
           <button className='button'>
             {daySelect} : {mealsObj[planObj[daySelect]] ? mealsObj[planObj[daySelect]].name : "Select Meal"}
           </button>
