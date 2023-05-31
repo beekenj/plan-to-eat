@@ -58,6 +58,7 @@ function App() {
   // console.log(weekdays[new Date(currentDay).getDay()])
   // console.log(weekdays.slice(new Date(Number(localStorage.getItem("currentDay"))).getDay(), today.getDay()))
   // localStorage.setItem("currentDay", JSON.stringify(currentDay))
+  // setCurrentDay()
 
   const weekStartingToday = Array(7).fill().map((_, idx) => today.getDay()+idx < 7 ? weekdays[today.getDay()+idx] : weekdays[today.getDay()+idx-7])
 
@@ -76,7 +77,7 @@ function App() {
   })
   const [mealSelect, setMealSelect] = useState(null)
   const [section, setSection] = useState("calendar")
-  const [searchIngredients, setSearchIngredients] = useState('')
+  const [search, setSearch] = useState('')
 
   useEffect(() => {
     onValue(shoppingListInDB, function(snapshot) {
@@ -153,7 +154,7 @@ function App() {
     } else {
       remove(ref(database, `meals/${mealSelect}/ingredients/${id}`))
     }
-    setSearchIngredients('')
+    setSearch('')
   }
 
   // Check item change event
@@ -210,9 +211,9 @@ function App() {
   const items = keys.map(elem => shoppingObj[elem])
   const addToShoppingListItems = keys.map((key, idx) => [key, items[idx]])
 
-  const condition = new RegExp(searchIngredients.toLowerCase())
+  const condition = new RegExp(search.toLowerCase())
 
-  // console.log(shoppingList)
+  // console.log(mealsList)
 
   // console.log(mealsObj)
   // console.log(mealsObj[planObj[daySelect]])
@@ -250,13 +251,20 @@ function App() {
         !mealAdd && !mealSelect &&
         <div>
           <div className='meal-list'>
-            {mealsList.map(elem => 
-              <Meal 
-                key={elem[0]} 
-                meal={elem[1]} 
-                handleClick={() => selectMeal(elem[0])} 
-                ingredientsClick={() => setMealSelect(elem[0])} 
-              />)}
+            {mealsList
+              .filter(item => condition.test(item[1].name.toLowerCase()))
+              .map(elem => 
+                <Meal 
+                  key={elem[0]} 
+                  meal={elem[1]} 
+                  handleClick={() => {
+                    selectMeal(elem[0])
+                    setSearch("")
+                  }}
+                  ingredientsClick={() => setMealSelect(elem[0])} 
+                />
+              )
+            }
             {/* <button className='add-button' onClick={() => setMealAdd(true)}><FontAwesomeIcon icon={faPlus} /></button> */}
           </div>
         </div>
@@ -388,14 +396,20 @@ function App() {
         !mealAdd && 
         !mealSelect &&
         <>
-          <button className='button' onClick={() => setDaySelect(null)} >
+          <button 
+            className='button' 
+            onClick={() => {
+              setDaySelect(null)
+              setSearch("")
+            }} 
+          >
             <FontAwesomeIcon icon={faArrowLeft} />
           </button>
           <input
             type='text'
             className='searchbar'
-            value={searchIngredients}
-            onChange={e => setSearchIngredients(e.target.value)}
+            value={search}
+            onChange={e => setSearch(e.target.value)}
             onKeyDown={searchEnter}
           />
           <button className='button'>
@@ -425,14 +439,20 @@ function App() {
       {section === "meals" && mealSelect &&
         <>
         <div>
-          <button className='button' onClick={() => setMealSelect(null)} >
+          <button 
+            className='button' 
+            onClick={() => {
+              setMealSelect(null)
+              setSearch("")
+            }}
+          >
             <FontAwesomeIcon icon={faArrowLeft} />
           </button>
           <input
             type='text'
             className='searchbar'
-            value={searchIngredients}
-            onChange={e => setSearchIngredients(e.target.value)}
+            value={search}
+            onChange={e => setSearch(e.target.value)}
             onKeyDown={searchEnter}
           />
         </div>
