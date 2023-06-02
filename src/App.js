@@ -78,6 +78,7 @@ function App() {
   const [mealSelect, setMealSelect] = useState(null)
   const [section, setSection] = useState("calendar")
   const [search, setSearch] = useState('')
+  const [isSearch, setIsSearch] = useState(false)
 
   useEffect(() => {
     onValue(shoppingListInDB, function(snapshot) {
@@ -410,10 +411,14 @@ function App() {
             className='searchbar'
             value={search}
             onChange={e => setSearch(e.target.value)}
+            onFocus={() => setIsSearch(true)}
+            onBlur={() => setIsSearch(false)}
             onKeyDown={searchEnter}
           />
           <button className='button'>
-            {daySelect} : {mealsObj[planObj[daySelect]] ? mealsObj[planObj[daySelect]].name : "Select Meal"}
+            {isSearch ? "" :
+              [daySelect, ": ", mealsObj[planObj[daySelect]] ? mealsObj[planObj[daySelect]].name : "Select Meal"]
+            }
           </button>
           <button className='button' onClick={() => removePlan(daySelect)} >
             <FontAwesomeIcon icon={faTimes} />
@@ -453,10 +458,14 @@ function App() {
             className='searchbar'
             value={search}
             onChange={e => setSearch(e.target.value)}
+            onFocus={() => setIsSearch(true)}
+            onBlur={() => setIsSearch(false)}
             onKeyDown={searchEnter}
           />
         </div>
-        <button className='button' style={{color:"white", }}>{mealsObj[mealSelect].name}</button>
+        {isSearch ? "" : 
+          <button className='button' style={{color:"white", }}>{mealsObj[mealSelect].name}</button>
+        }
         </>
       }
     </div>
