@@ -4,7 +4,8 @@ import DefaultImg from "../img/default_food.jpg"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { 
     faPlus,
-    faExternalLink, 
+    faExternalLink,
+    faSave,
 } from '@fortawesome/free-solid-svg-icons'
 
 export default function Day(props) {
@@ -31,6 +32,9 @@ export default function Day(props) {
                     <div className="meal">
                         <div>
                             {props.meal ? props.meal.name : "Select Meal"}
+                        </div>
+                        <div>
+                            <button className="button" onClick={() => props.resetOneDay(props.weekday)}><FontAwesomeIcon icon={faSave} /></button>
                         </div>
                         <div className="link">
                             {props.meal && props.meal.link &&

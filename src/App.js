@@ -200,6 +200,13 @@ function App() {
     //   })
   }
 
+  function resetOneDay(day) {
+    const oldMeal = planObj[day]
+    if (!oldMeal || oldMeal==='none') return
+    set(ref(database, `mealPlanExtended/${day}/lastWeek`), oldMeal)
+    set(ref(database, `mealPlan/${day}`), "none")
+  }
+
   // Get unique keys from ingredients of selected meals
   const keys = Array
     .from(new Set(Object.values(planObj)
@@ -216,7 +223,7 @@ function App() {
 
   // console.log(mealsList)
 
-  // console.log(mealsObj)
+  // console.log(planObj)
   // console.log(mealsObj[planObj[daySelect]])
   // console.log(mealsObj[planObjExtended["Tuesday"].lastWeek].name)
   // console.log(today)
@@ -229,6 +236,7 @@ function App() {
         weekStartingToday.map((elem, idx) =>           
           <Day key={idx} 
             weekday={elem} 
+            resetOneDay={resetOneDay}
             // lastWeek={planObjExtended[elem]}
             meal={mealsObj[planObj[elem]]} 
             lastWeek={planObjExtended[elem] && mealsObj[planObjExtended[elem].lastWeek]} 
