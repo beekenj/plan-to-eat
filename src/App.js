@@ -396,7 +396,7 @@ function App() {
             <button className='button' style={{color: section === "meals" ? "lightblue" : "white"}} onClick={() => setSection("meals")}><FontAwesomeIcon icon={faCutlery} /></button>
           </div>
           <div>
-            <button className='button' onClick={resetDays}><FontAwesomeIcon icon={faPaperPlane} /></button>
+            {/* <button className='button' onClick={resetDays}><FontAwesomeIcon icon={faPaperPlane} /></button> */}
           </div>
         </div>
       }
