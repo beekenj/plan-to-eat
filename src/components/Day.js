@@ -34,7 +34,7 @@ export default function Day(props) {
                             {props.meal ? props.meal.name : "Select Meal"}
                         </div>
                         <div>
-                            <button className="button" onClick={() => props.resetOneDay(props.weekday)}><FontAwesomeIcon icon={faSave} /></button>
+                            {props.meal && <button className="button" onClick={() => props.resetOneDay(props.weekday)}><FontAwesomeIcon icon={faSave} /></button>}
                         </div>
                         <div className="link">
                             {props.meal && props.meal.link &&
