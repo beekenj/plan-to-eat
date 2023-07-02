@@ -6,6 +6,7 @@ import {
     faPlus,
     faExternalLink,
     faSave,
+    faCheckSquare,
 } from '@fortawesome/free-solid-svg-icons'
 
 export default function Day(props) {
@@ -34,7 +35,7 @@ export default function Day(props) {
                             {props.meal ? props.meal.name : "Select Meal"}
                         </div>
                         <div>
-                            {props.meal && <button className="button" onClick={() => props.resetOneDay(props.weekday)}><FontAwesomeIcon icon={faSave} /></button>}
+                            {props.meal && <button className="button" style={{background:"#42f5a4"}} onClick={() => props.resetOneDay(props.weekday)}><FontAwesomeIcon icon={faCheckSquare} /></button>}
                         </div>
                         <div className="link">
                             {props.meal && props.meal.link &&
