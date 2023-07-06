@@ -202,7 +202,13 @@ function App() {
 
   function resetOneDay(day) {
     const oldMeal = planObj[day]
+    // const d = new Date()
+    // console.log(day)
+
+    // I need the date value from the givin day for this week...
+
     if (!oldMeal || oldMeal==='none') return
+    // set(ref(database, `meals/${oldMeal}/lastEaten`), /*date of last eaten*/)
     set(ref(database, `mealPlanExtended/${day}/lastWeek`), oldMeal)
     set(ref(database, `mealPlan/${day}`), "none")
   }
