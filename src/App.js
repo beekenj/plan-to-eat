@@ -30,7 +30,7 @@ import {
   faCutlery,
   faCalendar,
   faTimes,
-  faPaperPlane,
+  // faPaperPlane,
 } from '@fortawesome/free-solid-svg-icons'
 import ListItem from './components/ListItem';
 
@@ -49,11 +49,11 @@ const mealsInDB = ref(database, "meals")
 
 function App() {
   const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-  // const DAY = 86400000
+  const DAY = 86400000
   const today = new Date()
 
   
-  const [currentDay, setCurrentDay] = useState(JSON.parse(localStorage.getItem("currentDay")) || new Date().setHours(0,0,0,0))
+  // const [currentDay, setCurrentDay] = useState(JSON.parse(localStorage.getItem("currentDay")) || new Date().setHours(0,0,0,0))
 
   // console.log(weekdays[new Date(currentDay).getDay()])
   // console.log(weekdays.slice(new Date(Number(localStorage.getItem("currentDay"))).getDay(), today.getDay()))
@@ -129,9 +129,9 @@ function App() {
   //   }
   // }, [planObj])
 
-  useEffect(() => {
-    localStorage.setItem("currentDay", JSON.stringify(currentDay))
-  }, [currentDay])
+  // useEffect(() => {
+  //   localStorage.setItem("currentDay", JSON.stringify(currentDay))
+  // }, [currentDay])
 
   function addNew() {
     push(mealsInDB, newMeal)
@@ -182,33 +182,35 @@ function App() {
 
   // console.log(weekdays.slice(new Date(currentDay).getDay(), today.getDay()))
 
-  function resetDays() {
-    weekdays
-      .slice(new Date(currentDay).getDay(), today.getDay())
-      .forEach(day => {
-        const oldMeal = planObj[day]
-        set(ref(database, `mealPlanExtended/${day}/lastWeek`), oldMeal)
-        set(ref(database, `mealPlan/${day}`), "none")
-      })
+  // function resetDays() {
+  //   weekdays
+  //     .slice(new Date(currentDay).getDay(), today.getDay())
+  //     .forEach(day => {
+  //       const oldMeal = planObj[day]
+  //       set(ref(database, `mealPlanExtended/${day}/lastWeek`), oldMeal)
+  //       set(ref(database, `mealPlan/${day}`), "none")
+  //     })
 
-    setCurrentDay(new Date().setHours(0,0,0,0)) 
+  //   setCurrentDay(new Date().setHours(0,0,0,0)) 
 
-    // weekdays
-    //   .forEach(day => {
-    //     const meal = planObj[day]
-    //     set(ref(database, `mealPlanExtended/${day}/thisWeek`), meal)
-    //   })
+  //   // weekdays
+  //   //   .forEach(day => {
+  //   //     const meal = planObj[day]
+  //   //     set(ref(database, `mealPlanExtended/${day}/thisWeek`), meal)
+  //   //   })
+  // }
+
+  function getLastDate(day) {
+    let days_ago = today.getDay() - weekdays.indexOf(day)
+    if (days_ago < 0) days_ago += 7
+    return today.setHours(0,0,0,0) - days_ago * DAY
   }
 
   function resetOneDay(day) {
     const oldMeal = planObj[day]
-    // const d = new Date()
-    // console.log(day)
-
-    // I need the date value from the givin day for this week...
 
     if (!oldMeal || oldMeal==='none') return
-    // set(ref(database, `meals/${oldMeal}/lastEaten`), /*date of last eaten*/)
+    set(ref(database, `meals/${oldMeal}/lastEaten`), getLastDate(day))
     set(ref(database, `mealPlanExtended/${day}/lastWeek`), oldMeal)
     set(ref(database, `mealPlan/${day}`), "none")
   }
