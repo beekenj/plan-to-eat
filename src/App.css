@@ -15,7 +15,7 @@ html, body {
 }
 
 .meal-list {
-  display: grid;
+  /* display: grid; */
   grid-template-columns: 50% 50%;
 }
 

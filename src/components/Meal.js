@@ -5,8 +5,12 @@ import DefaultImg from "../img/default_food.jpg"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { 
   faShoppingBasket,
-  faPencil
+  faPencil,
+//   faHeart,
 } from '@fortawesome/free-solid-svg-icons'
+import {
+    faHeart as faHeartO,
+} from '@fortawesome/free-regular-svg-icons'
 
 export default function Meal(props) {
     return (
@@ -17,13 +21,14 @@ export default function Meal(props) {
                     <img src={DefaultImg} alt={props.meal.name} />
                 }
             </div>
-            <div style={{padding:"10px", width:"85%"}}>
+            <div style={{padding:"10px"}}>
                 <div style={{marginBottom:"10px"}}>
                     {props.meal.name}
                 </div>
                 <div className='meal-edit'>
                     <FontAwesomeIcon icon={faPencil} />
                     <FontAwesomeIcon onClick={props.ingredientsClick} icon={faShoppingBasket} />
+                    <FontAwesomeIcon icon={faHeartO} />
                 </div>
             </div>
         </div>
