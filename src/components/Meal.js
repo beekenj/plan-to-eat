@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { 
   faShoppingBasket,
   faPencil,
-//   faHeart,
+  faHeart,
 } from '@fortawesome/free-solid-svg-icons'
 import {
     faHeart as faHeartO,
@@ -28,7 +28,10 @@ export default function Meal(props) {
                 <div className='meal-edit'>
                     <FontAwesomeIcon icon={faPencil} />
                     <FontAwesomeIcon onClick={props.ingredientsClick} icon={faShoppingBasket} />
-                    <FontAwesomeIcon icon={faHeartO} />
+                    {props.meal.favorite ?
+                        <FontAwesomeIcon icon={faHeart} /> :
+                        <FontAwesomeIcon icon={faHeartO} />
+                    }
                 </div>
             </div>
         </div>
