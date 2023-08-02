@@ -28,9 +28,9 @@ export default function Meal(props) {
                 <div className='meal-edit'>
                     <FontAwesomeIcon icon={faPencil} />
                     <FontAwesomeIcon onClick={props.ingredientsClick} icon={faShoppingBasket} />
-                    {props.meal.favorite ?
-                        <FontAwesomeIcon icon={faHeart} /> :
-                        <FontAwesomeIcon icon={faHeartO} />
+                    {props.meal.isFavorite ?
+                        <FontAwesomeIcon onClick={props.setFavorite} icon={faHeart} /> :
+                        <FontAwesomeIcon onClick={props.setFavorite} icon={faHeartO} />
                     }
                 </div>
             </div>

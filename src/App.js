@@ -215,6 +215,14 @@ function App() {
     set(ref(database, `mealPlan/${day}`), "none")
   }
 
+  function setFavorite(id) {
+    const item = mealsObj[id]
+    set(ref(database, `meals/${id}`), {
+      ...item,
+      "isFavorite" : item.isFavorite ? false : true,
+    })
+  }
+
   // Get unique keys from ingredients of selected meals
   const keys = Array
     .from(new Set(Object.values(planObj)
@@ -268,17 +276,39 @@ function App() {
         !mealAdd && !mealSelect &&
         <div>
           <div className='meal-list'>
+            {/* Favorites */}
             {mealsList
               .filter(item => condition.test(item[1].name.toLowerCase()))
+              .filter(elem => elem[1].isFavorite)
               .map(elem => 
                 <Meal 
                   key={elem[0]} 
+                  id={elem[0]} 
                   meal={elem[1]} 
                   handleClick={() => {
                     selectMeal(elem[0])
                     setSearch("")
                   }}
                   ingredientsClick={() => setMealSelect(elem[0])} 
+                  setFavorite={() => setFavorite(elem[0])}
+                />
+              )
+            }
+            {/* Non-favorites */}
+            {mealsList
+              .filter(item => condition.test(item[1].name.toLowerCase()))
+              .filter(elem => !elem[1].isFavorite)
+              .map(elem => 
+                <Meal 
+                  key={elem[0]} 
+                  id={elem[0]} 
+                  meal={elem[1]} 
+                  handleClick={() => {
+                    selectMeal(elem[0])
+                    setSearch("")
+                  }}
+                  ingredientsClick={() => setMealSelect(elem[0])} 
+                  setFavorite={() => setFavorite(elem[0])}
                 />
               )
             }
@@ -336,9 +366,11 @@ function App() {
             {mealsList.map(elem => 
               <Meal 
                 key={elem[0]} 
+                id={elem[0]} 
                 meal={elem[1]} 
                 handleClick={() => console.log("todo?")} 
                 ingredientsClick={() => setMealSelect(elem[0])} 
+                setFavorite={() => setFavorite(elem[0])}
               />)}
           </div>
         </div>
