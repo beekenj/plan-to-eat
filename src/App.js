@@ -237,6 +237,9 @@ function App() {
 
   const condition = new RegExp(search.toLowerCase())
 
+  // mealsList.sort((i1, i2) => (i1[1].lastEaten < i2[1].lastEaten) ? 1 : (i1[1].lastEaten > i2[1].lastEaten) ? -1 : 0)
+  // mealsList.sort((i1, i2) => i1[1].lastEaten - i2[1].lastEaten)
+
   // console.log(mealsList)
 
   // console.log(planObj)

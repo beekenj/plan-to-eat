@@ -29,13 +29,18 @@ export default function Day(props) {
                 <div className="day-info">
                     <div className="title">
                         {props.weekday}
+                        {props.meal && 
+                            <button 
+                                className="button" 
+                                style={{background:"#42f5a4", marginLeft:"10px", padding:"6px"}} 
+                                onClick={() => props.resetOneDay(props.weekday)}
+                            >
+                                <FontAwesomeIcon icon={faCheckSquare} />
+                            </button>}
                     </div>
                     <div className="meal">
                         <div>
                             {props.meal ? props.meal.name : "Select Meal"}
-                        </div>
-                        <div>
-                            {props.meal && <button className="button" style={{background:"#42f5a4"}} onClick={() => props.resetOneDay(props.weekday)}><FontAwesomeIcon icon={faCheckSquare} /></button>}
                         </div>
                         <div className="link">
                             {props.meal && props.meal.link &&
